@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GAURAV MUSIC BASTI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#100e19;color:white;font-family:Arial;padding-bottom:100px}
+header{padding:25px 18px;background:linear-gradient(135deg,#6025a0,#171326)}
+header h1{margin:0;font-size:25px}
+header p{color:#e0caff}
+.container{padding:20px;max-width:700px;margin:auto}
+input{width:100%;padding:15px;border-radius:12px;border:0;background:#252033;color:white;margin:12px 0}
+.song{display:flex;align-items:center;gap:12px;background:#211d2c;padding:12px;margin:12px 0;border-radius:14px}
+.cover{width:60px;height:60px;object-fit:cover;border-radius:10px;background:#633b8a;flex-shrink:0}
+.info{flex:1;min-width:0}
+.info h3{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.info p{font-size:11px;color:#aaa}
+button{border:0;cursor:pointer}
+.play{background:#a44dff;color:white;padding:12px;border-radius:50%}
+#player{position:fixed;bottom:0;left:0;right:0;background:#211a30;padding:12px;border-top:1px solid #62418a}
+#now{text-align:center;color:#dfc4ff;font-size:13px}
+audio{width:100%;height:38px}
+</style>
+</head>
+<body>
+<header>
+<h1>🎵 GAURAV MUSIC BASTI</h1>
+<p>Feel The Music ❤️ | Gaurav Mishra</p>
+</header>
+<div class="container">
+<h2>Discover Music 🎧</h2>
+<input id="search" placeholder="🔍 Search Songs..." oninput="searchSongs()">
+<h2>All Songs 🎶</h2>
+<div id="songList">
+{% for song in songs %}
+<div class="song" data-name="{{ song.name|lower }}">
+{% if song.cover %}
+<img class="cover" src="{{ song.cover }}">
+{% else %}
+<div class="cover" style="display:grid;place-items:center">🎵</div>
+{% endif %}
+<div class="info">
+<h3>{{ song.name }}</h3>
+<p>GAURAV MUSIC BASTI</p>
+</div>
+<button class="play" onclick="playSong({{ loop.index0 }})">▶</button>
+<audio hidden src="{{ url_for('play_song', filename=song.name) }}"></audio>
+</div>
+{% else %}
+<p>No Songs Uploaded Yet 🎵</p>
+{% endfor %}
+</div>
+</div>
+<div id="player">
+<div id="now">Select a song 🎵</div>
+<audio id="audio" controls></audio>
+</div>
+<script>
+const cards=[...document.querySelectorAll(".song")];
+const audio=document.getElementById("audio");
+let current=-1;
+function playSong(i){
+if(!cards.length)return;
+current=(i+cards.length)%cards.length;
+audio.src=cards[current].querySelector("audio").src;
+document.getElementById("now").innerText="🎵 "+cards[current].querySelector("h3").innerText;
+audio.play();
+}
+audio.addEventListener("ended",()=>{
+if(cards.length)playSong(current+1);
+});
+function searchSongs(){
+let q=document.getElementById("search").value.toLowerCase();
+cards.forEach(c=>c.style.display=c.dataset.name.includes(q)?"flex":"none");
+}
+</script>
+</body>
+</html>

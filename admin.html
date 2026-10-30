@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GAURAV MUSIC ADMIN</title>
+<style>
+body{background:#100e19;color:white;font-family:Arial;padding:20px}
+.box{background:#252033;padding:20px;border-radius:15px;max-width:450px;margin:auto}
+input,button{width:100%;padding:13px;margin:10px 0;box-sizing:border-box;border:0;border-radius:9px}
+input{background:#eee;color:#111}
+button{background:#984cff;color:white;font-weight:bold}
+.song{background:#393047;padding:12px;margin:12px 0;border-radius:10px}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>🎵 GAURAV MUSIC BASTI</h2>
+<h3>Admin Panel</h3>
+
+{% if not logged_in %}
+<form method="POST">
+<input type="password" name="password" placeholder="Admin Password" required>
+<button type="submit">Login</button>
+</form>
+{% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+
+{% else %}
+<h3>Upload New Song 🎶</h3>
+<form action="/upload" method="POST" enctype="multipart/form-data">
+<label>Choose MP3 Song</label>
+<input type="file" name="song" accept=".mp3,.wav,.ogg" required>
+
+<label>Choose Album Cover Photo</label>
+<input type="file" name="cover" accept=".jpg,.jpeg,.png,.webp">
+
+<button type="submit">Upload Song + Photo</button>
+</form>
+
+<h3>Uploaded Songs</h3>
+{% for song in songs %}
+<div class="song">
+{{ song }}
+<form action="/delete/{{ song }}" method="POST">
+<button type="submit">Delete Song</button>
+</form>
+</div>
+{% else %}
+<p>No songs uploaded yet.</p>
+{% endfor %}
+
+<a href="/logout" style="color:white">Logout</a>
+{% endif %}
+</div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GAURAV MUSIC ADMIN</title>
+<style>
+body{background:#100e19;color:white;font-family:Arial;padding:20px}
+.box{background:#252033;padding:20px;border-radius:15px;max-width:450px;margin:auto}
+input,button{width:100%;padding:13px;margin:10px 0;box-sizing:border-box;border:0;border-radius:9px}
+input{background:#eee;color:#111}
+button{background:#984cff;color:white;font-weight:bold}
+.song{background:#393047;padding:12px;margin:12px 0;border-radius:10px}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>🎵 GAURAV MUSIC BASTI</h2>
+<h3>Admin Panel</h3>
+
+{% if not logged_in %}
+<form method="POST">
+<input type="password" name="password" placeholder="Admin Password" required>
+<button type="submit">Login</button>
+</form>
+{% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+
+{% else %}
+<h3>Upload New Song 🎶</h3>
+<form action="/upload" method="POST" enctype="multipart/form-data">
+<label>Choose MP3 Song</label>
+<input type="file" name="song" accept=".mp3,.wav,.ogg" required>
+
+<label>Choose Album Cover Photo</label>
+<input type="file" name="cover" accept=".jpg,.jpeg,.png,.webp">
+
+<button type="submit">Upload Song + Photo</button>
+</form>
+
+<h3>Uploaded Songs</h3>
+{% for song in songs %}
+<div class="song">
+{{ song }}
+<form action="/delete/{{ song }}" method="POST">
+<button type="submit">Delete Song</button>
+</form>
+</div>
+{% else %}
+<p>No songs uploaded yet.</p>
+{% endfor %}
+
+<a href="/logout" style="color:white">Logout</a>
+{% endif %}
+</div>
+</body>
+</html>
